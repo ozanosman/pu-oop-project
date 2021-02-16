@@ -13,12 +13,9 @@ public class GameBoard
     private final int TILE_SIDE_HEIGHT = 7;
     private final int TILE_SIDE_WIDTH = 9;
 
-    private int PLAYER_A_FIGURE_COUNT = 6;
-    private int PLAYER_B_FIGURE_COUNT = 6;
-
     private Piece[][] pieceCollection = new Piece[TILE_SIDE_HEIGHT][TILE_SIDE_WIDTH];
 
-    public void renderBattleField(Graphics g, int row, int col)
+    public void renderPlayerField(Graphics g, int row, int col)
     {
         Color fieldColor = this.getFieldColor(row, col);
 
@@ -26,8 +23,19 @@ public class GameBoard
         field.renderTile(g);
     }
 
-    public void playerAFigures()
+    public void renderBattleField(Graphics g, int row, int col)
     {
+        if (row > 1 && row < 5)
+        {
+            Tile battleField = new Tile(row, col, Color.LIGHT_GRAY, Color.BLACK);
+            battleField.renderTile(g);
+        }
+    }
+
+    public void playerAKnight()
+    {
+        int KNIGHT_COUNT = 2;
+
         do
         {
             int row = getRowCoordinates();
@@ -39,21 +47,58 @@ public class GameBoard
             }
 
             this.pieceCollection[row][col] = new Knight(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Knight(row, col, Color.WHITE, Color.BLACK);
 
-            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
-
-            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
-
-            PLAYER_A_FIGURE_COUNT--;
+            KNIGHT_COUNT--;
         }
-        while(PLAYER_A_FIGURE_COUNT != 0);
+        while(KNIGHT_COUNT != 0);
     }
 
-    public void playerBFigures()
+    public void playerAElf()
     {
+        int ELF_COUNT = 2;
+
+        do
+        {
+            int row = getRowCoordinates();
+            int col = getColCoordinates();
+
+            if (this.hasBoardPiece(row, col))
+            {
+                continue;
+            }
+
+            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
+
+            ELF_COUNT--;
+        }
+        while(ELF_COUNT != 0);
+    }
+
+    public void playerADwarf()
+    {
+        int DWARF_COUNT = 2;
+
+        do
+        {
+            int row = getRowCoordinates();
+            int col = getColCoordinates();
+
+            if (this.hasBoardPiece(row, col))
+            {
+                continue;
+            }
+
+            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
+
+            DWARF_COUNT--;
+        }
+        while(DWARF_COUNT != 0);
+    }
+
+    public void playerBKnight()
+    {
+        int KNIGHT_COUNT = 2;
+
         do
         {
             int row = getRowCoordinates() + 5;
@@ -65,17 +110,52 @@ public class GameBoard
             }
 
             this.pieceCollection[row][col] = new Knight(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Knight(row, col, Color.WHITE, Color.BLACK);
 
-            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
-
-            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
-            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
-
-            PLAYER_B_FIGURE_COUNT--;
+            KNIGHT_COUNT--;
         }
-        while(PLAYER_B_FIGURE_COUNT != 0);
+        while(KNIGHT_COUNT != 0);
+    }
+
+    public void playerBElf()
+    {
+        int ELF_COUNT = 2;
+
+        do
+        {
+            int row = getRowCoordinates() + 5;
+            int col = getColCoordinates();
+
+            if (this.hasBoardPiece(row, col))
+            {
+                continue;
+            }
+
+            this.pieceCollection[row][col] = new Elf(row, col, Color.WHITE, Color.BLACK);
+
+            ELF_COUNT--;
+        }
+        while(ELF_COUNT != 0);
+    }
+
+    public void playerBDwarf()
+    {
+        int DWARF_COUNT = 2;
+
+        do
+        {
+            int row = getRowCoordinates() + 5;
+            int col = getColCoordinates();
+
+            if (this.hasBoardPiece(row, col))
+            {
+                continue;
+            }
+
+            this.pieceCollection[row][col] = new Dwarf(row, col, Color.WHITE, Color.BLACK);
+
+            DWARF_COUNT--;
+        }
+        while(DWARF_COUNT != 0);
     }
 
     public void renderPiece(Graphics g, int row, int col)
@@ -91,25 +171,26 @@ public class GameBoard
     {
         boolean isRowEven = (row % 2 == 0);
         boolean isRowOdd = !isRowEven;
+
         boolean isColEven = (col % 2 == 0);
         boolean isColOdd = !isColEven;
 
         if (isRowEven && isColEven)
         {
-            return Color.BLACK;
+            return Color.GRAY;
         }
 
         if (isRowEven && isColOdd)
         {
-            return Color.GRAY;
+            return Color.BLACK;
         }
 
         if (isRowOdd && isColEven)
         {
-            return Color.GRAY;
+            return Color.BLACK;
         }
 
-        return Color.BLACK;
+        return Color.GRAY;
     }
 
     private Piece getBoardPiece(int row, int col)

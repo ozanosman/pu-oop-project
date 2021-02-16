@@ -20,8 +20,13 @@ public class SwingRenderer extends JFrame
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.gameBoard.playerAFigures();
-        this.gameBoard.playerBFigures();
+        this.gameBoard.playerAKnight();
+        this.gameBoard.playerAElf();
+        this.gameBoard.playerADwarf();
+
+        this.gameBoard.playerBKnight();
+        this.gameBoard.playerBElf();
+        this.gameBoard.playerBDwarf();
     }
 
     @Override
@@ -31,6 +36,8 @@ public class SwingRenderer extends JFrame
         {
             for (int col = 0; col < 9; col++)
             {
+                this.gameBoard.renderPlayerField(g, row, col);
+
                 this.gameBoard.renderBattleField(g, row, col);
 
                 this.gameBoard.renderPiece(g, row, col);
