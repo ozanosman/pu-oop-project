@@ -1,6 +1,7 @@
 package renderer;
 
 import game.GameBoard;
+import ui.Modal;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,28 +21,32 @@ public class SwingRenderer extends JFrame
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.gameBoard.playerAKnight();
-        this.gameBoard.playerAElf();
-        this.gameBoard.playerADwarf();
+        this.gameBoard.obstacleCoordinates();
 
-        this.gameBoard.playerBKnight();
-        this.gameBoard.playerBElf();
-        this.gameBoard.playerBDwarf();
+        this.gameBoard.playerAKnightCoordinates();
+        this.gameBoard.playerAElfCoordinates();
+        this.gameBoard.playerADwarfCoordinates();
+
+        this.gameBoard.playerBKnightCoordinates();
+        this.gameBoard.playerBElfCoordinates();
+        this.gameBoard.playerBDwarfCoordinates();
+
+        if (this.gameBoard.IS_GAME_OFF)
+        {
+            Modal.renderMessage(this, "Внимание!", "Играта започва!");
+            Modal.renderMessage(this, "Внимание!", this.gameBoard.getStartingPlayer());
+            this.gameBoard.IS_GAME_ON = true;
+        }
     }
 
     @Override
     public void paint(Graphics g)
     {
-        for (int row = 0; row < 7; row++)
-        {
-            for (int col = 0; col < 9; col++)
-            {
-                this.gameBoard.renderPlayerField(g, row, col);
+      this.gameBoard.renderPlayerAField(g);
+      this.gameBoard.renderPlayerBField(g);
 
-                this.gameBoard.renderBattleField(g, row, col);
+      this.gameBoard.renderBattleField(g);
 
-                this.gameBoard.renderPiece(g, row, col);
-            }
-        }
+      this.gameBoard.renderPiece(g);
     }
 }

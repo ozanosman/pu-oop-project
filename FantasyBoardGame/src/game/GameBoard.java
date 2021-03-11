@@ -4,35 +4,71 @@ import piece.Dwarf;
 import piece.Elf;
 import piece.Knight;
 import piece.Piece;
+import tile.ObstacleTile;
 import tile.Tile;
 
 import java.awt.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameBoard
 {
     private final int TILE_SIDE_HEIGHT = 7;
     private final int TILE_SIDE_WIDTH = 9;
 
+    private Tile[][] tileCollection = new Tile[TILE_SIDE_HEIGHT][TILE_SIDE_WIDTH];
     private Piece[][] pieceCollection = new Piece[TILE_SIDE_HEIGHT][TILE_SIDE_WIDTH];
 
-    public void renderPlayerField(Graphics g, int row, int col)
-    {
-        Color fieldColor = this.getFieldColor(row, col);
+    public boolean IS_GAME_ON = false;
+    public boolean IS_GAME_OFF = true;
 
-        Tile field = new Tile(row, col, fieldColor, Color.BLACK);
-        field.renderTile(g);
-    }
-
-    public void renderBattleField(Graphics g, int row, int col)
+    public void renderPlayerAField(Graphics g)
     {
-        if (row > 1 && row < 5)
+        for (int row = 0; row < 2; row++)
         {
-            Tile battleField = new Tile(row, col, Color.LIGHT_GRAY, Color.BLACK);
-            battleField.renderTile(g);
+            for (int col = 0; col < 9; col++)
+            {
+                Color fieldColor = this.getFieldColor(row, col);
+
+                Tile field = new Tile(row, col, fieldColor, Color.BLACK);
+                field.renderTile(g);
+            }
         }
     }
 
-    public void playerAKnight()
+    public void renderPlayerBField(Graphics g)
+    {
+        for (int row = 5; row < 7; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                Color fieldColor = this.getFieldColor(row, col);
+
+                Tile field = new Tile(row, col, fieldColor, Color.BLACK);
+                field.renderTile(g);
+            }
+        }
+    }
+
+    public void renderBattleField(Graphics g)
+    {
+        for (int row = 2; row < 5; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                Tile battleField = new Tile(row, col, Color.LIGHT_GRAY, Color.BLACK);
+                battleField.renderTile(g);
+
+                this.renderObstacle(g, row, col);
+            }
+        }
+    }
+
+    public String getStartingPlayer()
+    {
+        return String.format("%s е на ред!", pickStartingPlayer() ? "Player A" : "Player B");
+    }
+
+    public void playerAKnightCoordinates()
     {
         int KNIGHT_COUNT = 2;
 
@@ -53,7 +89,7 @@ public class GameBoard
         while(KNIGHT_COUNT != 0);
     }
 
-    public void playerAElf()
+    public void playerAElfCoordinates()
     {
         int ELF_COUNT = 2;
 
@@ -74,7 +110,7 @@ public class GameBoard
         while(ELF_COUNT != 0);
     }
 
-    public void playerADwarf()
+    public void playerADwarfCoordinates()
     {
         int DWARF_COUNT = 2;
 
@@ -95,7 +131,7 @@ public class GameBoard
         while(DWARF_COUNT != 0);
     }
 
-    public void playerBKnight()
+    public void playerBKnightCoordinates()
     {
         int KNIGHT_COUNT = 2;
 
@@ -116,7 +152,7 @@ public class GameBoard
         while(KNIGHT_COUNT != 0);
     }
 
-    public void playerBElf()
+    public void playerBElfCoordinates()
     {
         int ELF_COUNT = 2;
 
@@ -137,7 +173,7 @@ public class GameBoard
         while(ELF_COUNT != 0);
     }
 
-    public void playerBDwarf()
+    public void playerBDwarfCoordinates()
     {
         int DWARF_COUNT = 2;
 
@@ -158,12 +194,48 @@ public class GameBoard
         while(DWARF_COUNT != 0);
     }
 
-    public void renderPiece(Graphics g, int row, int col)
+    public void obstacleCoordinates()
     {
-        if (this.hasBoardPiece(row, col))
+        int OBSTACLE_COUNT = ThreadLocalRandom.current().nextInt(1, 6);
+
+        do
         {
-            Piece piece = this.getBoardPiece(row, col);
-            piece.renderPiece(g);
+            int row = ThreadLocalRandom.current().nextInt(2, 5);
+            int col = ThreadLocalRandom.current().nextInt(0, 9);
+
+            if (this.tileCollection[row][col] != null)
+            {
+                continue;
+            }
+
+            this.tileCollection[row][col] = new ObstacleTile(row, col, Color.BLACK , Color.BLACK);
+
+            OBSTACLE_COUNT--;
+        }
+        while(OBSTACLE_COUNT != 0);
+    }
+
+    public void renderPiece(Graphics g)
+    {
+        for (int row = 0; row < 7; row++)
+        {
+            for (int col = 0; col < 9; col++)
+            {
+                if (this.hasBoardPiece(row, col))
+                {
+                    Piece piece = this.getBoardPiece(row, col);
+                    piece.renderPiece(g);
+                }
+            }
+        }
+    }
+
+    private void renderObstacle(Graphics g, int row, int col)
+    {
+        if (this.tileCollection[row][col] != null)
+        {
+            Tile tile = this.tileCollection[row][col];
+            tile.renderTile(g);
         }
     }
 
@@ -177,20 +249,20 @@ public class GameBoard
 
         if (isRowEven && isColEven)
         {
-            return Color.GRAY;
+            return new Color(170, 170 ,170);
         }
 
         if (isRowEven && isColOdd)
         {
-            return Color.BLACK;
+            return new Color(68, 68 ,68);
         }
 
         if (isRowOdd && isColEven)
         {
-            return Color.BLACK;
+            return new Color(68, 68 ,68);
         }
 
-        return Color.GRAY;
+        return new Color(170, 170 ,170);
     }
 
     private Piece getBoardPiece(int row, int col)
@@ -211,5 +283,10 @@ public class GameBoard
     private int getColCoordinates()
     {
         return (int) (Math.random() * 9);
+    }
+
+    private boolean pickStartingPlayer()
+    {
+        return Math.random() > 0.5;
     }
 }
