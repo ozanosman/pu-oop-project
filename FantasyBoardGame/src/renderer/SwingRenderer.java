@@ -5,7 +5,6 @@ import piece.Dwarf;
 import piece.Elf;
 import piece.Knight;
 import piece.Piece;
-import tile.ObstacleTile;
 import ui.Modal;
 
 import javax.swing.*;
@@ -21,19 +20,19 @@ public class SwingRenderer extends JFrame implements MouseListener
     {
         this.gameBoard = gameBoard;
 
-        this.gameBoard.pieceCollection[1][10] = new Knight(1, 10, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[2][10] = new Knight(2, 10, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[1][11] = new Elf(1, 11, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[2][11] = new Elf(2, 11, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[1][12] = new Dwarf(1, 12, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[2][12] = new Dwarf(2, 12, Color.WHITE, Color.BLACK);
+        this.gameBoard.pieceCollection[1][10] = new Knight(1, 10, Color.RED, Color.BLACK);
+        this.gameBoard.pieceCollection[2][10] = new Knight(2, 10, Color.RED, Color.BLACK);
+        this.gameBoard.pieceCollection[1][11] = new Elf(1, 11, Color.RED, Color.BLACK);
+        this.gameBoard.pieceCollection[2][11] = new Elf(2, 11, Color.RED, Color.BLACK);
+        this.gameBoard.pieceCollection[1][12] = new Dwarf(1, 12, Color.RED, Color.BLACK);
+        this.gameBoard.pieceCollection[2][12] = new Dwarf(2, 12, Color.RED, Color.BLACK);
 
-        this.gameBoard.pieceCollection[4][10] = new Knight(4, 10, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[5][10] = new Knight(5, 10, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[4][11] = new Elf(4, 11, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[5][11] = new Elf(5, 11, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[4][12] = new Dwarf(4, 12, Color.WHITE, Color.BLACK);
-        this.gameBoard.pieceCollection[5][12] = new Dwarf(5, 12, Color.WHITE, Color.BLACK);
+        this.gameBoard.pieceCollection[4][10] = new Knight(4, 10, Color.BLUE, Color.BLACK);
+        this.gameBoard.pieceCollection[5][10] = new Knight(5, 10, Color.BLUE, Color.BLACK);
+        this.gameBoard.pieceCollection[4][11] = new Elf(4, 11, Color.BLUE, Color.BLACK);
+        this.gameBoard.pieceCollection[5][11] = new Elf(5, 11, Color.BLUE, Color.BLACK);
+        this.gameBoard.pieceCollection[4][12] = new Dwarf(4, 12, Color.BLUE, Color.BLACK);
+        this.gameBoard.pieceCollection[5][12] = new Dwarf(5, 12, Color.BLUE, Color.BLACK);
 
         this.setTitle("Knights vs Elves vs Dwarfs");
         this.setSize(1400, 700);
@@ -60,7 +59,7 @@ public class SwingRenderer extends JFrame implements MouseListener
         int row = this.gameBoard.getBoardCoordinates(e.getY());
         int col = this.gameBoard.getBoardCoordinates(e.getX());
 
-        if (this.gameBoard.ROUND >= 20 && this.gameBoard.isGameOn)
+        if (this.gameBoard.ROUND >= 25 && this.gameBoard.isGameOn)
         {
             Modal.renderMessageWithButton(this,"Внимание!","Играта завършва без победители!");
         }
@@ -96,7 +95,7 @@ public class SwingRenderer extends JFrame implements MouseListener
             }
             else
             {
-                if (piece.isMoveValid(row, col))
+                if (piece.isMoveValid(row, col) || piece.isAttackValid(row, col))
                 {
                     this.gameBoard.movePiece(row, col, piece);
 
@@ -158,6 +157,7 @@ public class SwingRenderer extends JFrame implements MouseListener
         if (this.gameBoard.CHOSEN_PLAYER >= 12)
         {
             this.gameBoard.renderRound(g);
+            this.gameBoard.renderPlayersKillCount(g);
         }
     }
 }

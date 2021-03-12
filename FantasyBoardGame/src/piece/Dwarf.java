@@ -46,6 +46,22 @@ public class Dwarf extends Piece
     @Override
     public boolean isAttackValid(int attackRow, int attackCol)
     {
+        if (GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER1 && attackRow < 5 && attackCol < 9 && getColor().equals(Color.BLUE))
+        {
+            int rowCoefficient = Math.abs(attackRow - this.row);
+            int colCoefficient = Math.abs(attackRow - this.col);
+
+            return rowCoefficient == 0 && colCoefficient <= 2 || rowCoefficient <= 2 && colCoefficient == 0;
+        }
+
+        if (GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER2 && attackRow > 1 && attackCol < 9 && getColor().equals(Color.RED))
+        {
+            int rowCoefficient = Math.abs(attackRow - this.row);
+            int colCoefficient = Math.abs(attackRow - this.col);
+
+            return rowCoefficient == 0 && colCoefficient <= 2 || rowCoefficient <= 2 && colCoefficient == 0;
+        }
+
         return false;
     }
 }

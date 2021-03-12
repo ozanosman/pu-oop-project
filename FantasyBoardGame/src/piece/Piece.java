@@ -43,6 +43,11 @@ public abstract class Piece
         return col;
     }
 
+    public Color getColor()
+    {
+        return color;
+    }
+
     public void movePiece(int newRow, int newCol)
     {
         this.row = newRow;

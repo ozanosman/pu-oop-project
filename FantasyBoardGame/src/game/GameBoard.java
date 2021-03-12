@@ -23,6 +23,9 @@ public class GameBoard
     public boolean isGameOn = false;
     public boolean allPiecesPlaced = false;
 
+    private int PLAYER1_KILLED_PIECES = 0;
+    private int PLAYER2_KILLED_PIECES = 0;
+
     public int ROUND = 0;
 
     public void renderPlayerAField(Graphics g)
@@ -128,8 +131,8 @@ public class GameBoard
 
     public void renderPlayerPiecePickerFields(Graphics g)
     {
-        g.setColor(Color.BLACK);
         g.setFont(Font.decode("Courier, Font.BOLD, 25"));
+        g.setColor(Color.BLACK);
 
         g.drawString("Фигури на Player A", 1000, 95);
         renderPlayerAPiecePickerField(g);
@@ -144,7 +147,19 @@ public class GameBoard
     {
         g.setFont(Font.decode("Courier, Font.BOLD, 25"));
         g.setColor(Color.GRAY);
+
         g.drawString("Рунд: " + ++ROUND, 1000, 650);
+    }
+
+    public void renderPlayersKillCount(Graphics g)
+    {
+        g.setFont(Font.decode("Courier, Font.BOLD, 15"));
+
+        g.setColor(Color.RED);
+        g.drawString("Убити фигури: " + PLAYER1_KILLED_PIECES, 1250, 95);
+
+        g.setColor(Color.BLUE);
+        g.drawString("Убити фигури: " + PLAYER2_KILLED_PIECES, 1250, 395);
     }
 
     public void renderPiece(Graphics g)
@@ -164,17 +179,35 @@ public class GameBoard
 
     public void movePiece(int row, int col, Piece piece)
     {
-        int initialRow = piece.getRow();
-        int initialCol = piece.getCol();
+        if (CHOSEN_PLAYER % 2 == PLAYER1 && piece.getColor().equals(Color.RED))
+        {
+            int initialRow = piece.getRow();
+            int initialCol = piece.getCol();
 
-        piece.movePiece(row, col);
+            piece.movePiece(row, col);
 
-        this.pieceCollection[piece.getRow()][piece.getCol()] = this.selectedPiece;
-        this.pieceCollection[initialRow][initialCol] = null;
+            this.pieceCollection[piece.getRow()][piece.getCol()] = this.selectedPiece;
+            this.pieceCollection[initialRow][initialCol] = null;
 
-        this.selectedPiece = null;
+            this.selectedPiece = null;
 
-        CHOSEN_PLAYER++;
+            CHOSEN_PLAYER++;
+        }
+
+        if (CHOSEN_PLAYER % 2 == PLAYER2 && piece.getColor().equals(Color.BLUE))
+        {
+            int initialRow = piece.getRow();
+            int initialCol = piece.getCol();
+
+            piece.movePiece(row, col);
+
+            this.pieceCollection[piece.getRow()][piece.getCol()] = this.selectedPiece;
+            this.pieceCollection[initialRow][initialCol] = null;
+
+            this.selectedPiece = null;
+
+            CHOSEN_PLAYER++;
+        }
     }
 
     public Tile getBoardTile(int row, int col)
@@ -260,7 +293,7 @@ public class GameBoard
             {
                 for (int col = 0; col < 9; col++)
                 {
-                    Tile blocker = new Tile(row, col, Color.RED, Color.BLACK);
+                    Tile blocker = new Tile(row, col, Color.BLUE, Color.BLACK);
                     blocker.renderTile(g);
                 }
             }
