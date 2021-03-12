@@ -101,9 +101,11 @@ public class GameBoard
 
         g.drawString("Фигури на Player A", 1000, 95);
         renderPlayerAPiecePickerField(g);
+        renderPlayerAPlacementBlocker(g);
 
         g.drawString("Фигури на Player B", 1000, 395);
         renderPlayerBPiecePickerField(g);
+        renderPlayerBPlacementBlocker(g);
     }
 
     public void renderPiece(Graphics g)
@@ -132,7 +134,10 @@ public class GameBoard
         this.pieceCollection[initialRow][initialCol] = null;
 
         this.selectedPiece = null;
+
         CHOSEN_PLAYER++;
+
+        System.out.println(CHOSEN_PLAYER);
     }
 
     public Piece getBoardPiece(int row, int col)
@@ -196,6 +201,36 @@ public class GameBoard
             {
                 Tile pickerField = new Tile(row, col, Color.LIGHT_GRAY, Color.BLACK);
                 pickerField.renderTile(g);
+            }
+        }
+    }
+
+    private void renderPlayerAPlacementBlocker(Graphics g)
+    {
+        if (CHOSEN_PLAYER % 2 == PLAYER1 && CHOSEN_PLAYER < 12)
+        {
+            for (int row = 2; row < 7; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    Tile blocker = new Tile(row, col, Color.RED, Color.BLACK);
+                    blocker.renderTile(g);
+                }
+            }
+        }
+    }
+
+    private void renderPlayerBPlacementBlocker(Graphics g)
+    {
+        if (CHOSEN_PLAYER % 2 == PLAYER2 && CHOSEN_PLAYER < 12)
+        {
+            for (int row = 0; row < 5; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    Tile blocker = new Tile(row, col, Color.RED, Color.BLACK);
+                    blocker.renderTile(g);
+                }
             }
         }
     }
