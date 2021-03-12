@@ -59,13 +59,13 @@ public class SwingRenderer extends JFrame implements MouseListener
         int row = this.gameBoard.getBoardCoordinates(e.getY());
         int col = this.gameBoard.getBoardCoordinates(e.getX());
 
-        if (this.gameBoard.selectedPiece != null)
-        {
-            Piece piece = this.gameBoard.selectedPiece;
+        Piece piece = this.gameBoard.selectedPiece;
 
+        if (this.gameBoard.selectedPiece != null && !this.gameBoard.allPiecesPlaced)
+        {
             if (piece.isPlacementValid(row, col))
             {
-                this.gameBoard.movePieceFromPickerField(row, col, piece);
+                this.gameBoard.movePiece(row, col, piece);
 
                 this.repaint();
 
@@ -74,6 +74,27 @@ public class SwingRenderer extends JFrame implements MouseListener
             else
             {
                 Modal.renderMessage(this, "Внимание!", "Тука не можете да поставите фигурата си!");
+            }
+        }
+
+        if (this.gameBoard.CHOSEN_PLAYER == 12)
+        {
+            this.gameBoard.allPiecesPlaced = true;
+        }
+
+        if (this.gameBoard.selectedPiece != null && this.gameBoard.allPiecesPlaced)
+        {
+            if (piece.isMoveValid(row, col))
+            {
+                this.gameBoard.movePiece(row, col, piece);
+
+                this.repaint();
+
+                return;
+            }
+            else
+            {
+                Modal.renderMessage(this, "Внимание!", "Тука не можете да подвижите фигурата си!");
             }
         }
 
@@ -110,11 +131,14 @@ public class SwingRenderer extends JFrame implements MouseListener
     @Override
     public void paint(Graphics g)
     {
+        super.paint(g);
+
         this.gameBoard.renderPlayerAField(g);
         this.gameBoard.renderPlayerBField(g);
 
         this.gameBoard.renderBattleField(g);
 
+        this.gameBoard.renderPlayerTurn(g);
         this.gameBoard.renderPlayerPiecePickerFields(g);
         this.gameBoard.renderPiece(g);
     }

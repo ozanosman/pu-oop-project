@@ -21,6 +21,7 @@ public class GameBoard
     public static int PLAYER2 = 1;
 
     public boolean isGameOn = false;
+    public boolean allPiecesPlaced = false;
 
     public void renderPlayerAField(Graphics g)
     {
@@ -94,6 +95,23 @@ public class GameBoard
         }
     }
 
+    public void renderPlayerTurn(Graphics g)
+    {
+        g.setFont(Font.decode("Courier, Font.BOLD, 25"));
+
+        if (CHOSEN_PLAYER % 2 == PLAYER1)
+        {
+            g.setColor(Color.RED);
+            g.drawString("Ред е на Player A", 925, 350);
+        }
+
+        if (CHOSEN_PLAYER % 2 == PLAYER2)
+        {
+            g.setColor(Color.BLUE);
+            g.drawString("Ред е на Player B", 925, 350);
+        }
+    }
+
     public void renderPlayerPiecePickerFields(Graphics g)
     {
         g.setColor(Color.BLACK);
@@ -123,7 +141,7 @@ public class GameBoard
         }
     }
 
-    public void movePieceFromPickerField(int row, int col, Piece piece)
+    public void movePiece(int row, int col, Piece piece)
     {
         int initialRow = piece.getRow();
         int initialCol = piece.getCol();
@@ -136,8 +154,6 @@ public class GameBoard
         this.selectedPiece = null;
 
         CHOSEN_PLAYER++;
-
-        System.out.println(CHOSEN_PLAYER);
     }
 
     public Piece getBoardPiece(int row, int col)

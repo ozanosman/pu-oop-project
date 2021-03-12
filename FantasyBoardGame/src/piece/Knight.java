@@ -24,6 +24,22 @@ public class Knight extends Piece
     @Override
     public boolean isMoveValid(int moveRow, int moveCol)
     {
+        if (GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER1 && moveRow < 5 && moveCol < 9)
+        {
+            int rowCoefficient = Math.abs(moveRow - this.row);
+            int colCoefficient = Math.abs(moveCol - this.col);
+
+            return rowCoefficient == 0 && colCoefficient == 1 || rowCoefficient == 1 && colCoefficient == 0;
+        }
+
+        if (GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER2 && moveRow > 1 && moveCol < 9)
+        {
+            int rowCoefficient = Math.abs(moveRow - this.row);
+            int colCoefficient = Math.abs(moveCol - this.col);
+
+            return rowCoefficient == 0 && colCoefficient == 1 || rowCoefficient == 1 && colCoefficient == 0;
+        }
+
         return false;
     }
 
