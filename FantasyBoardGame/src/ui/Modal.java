@@ -7,8 +7,20 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Клас наследяващ JDialog, съдържащ конструктори и методи за визуализиране на прозореца "Modal".
+ *
+ * @author Озан Осман
+ */
 public class Modal extends JDialog
 {
+    /**
+     * Конструктор съдържащ характеристиките за създаване на прозореца "Modal".
+     *
+     * @param parent    родителят, който JFrame ще го използва
+     * @param title     заглавие на прозореца
+     * @param message   съобщение в прозореца
+     */
     public Modal(JFrame parent, String title, String message)
     {
         super(parent, title, true);
@@ -26,6 +38,13 @@ public class Modal extends JDialog
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Конструктор съдържащ характеристиките за създаване на прозореца "Modal" с бутон.
+     *
+     * @param message   съобщение в прозореца
+     * @param parent    родителят, който JFrame ще го използва
+     * @param title     заглавие на прозореца
+     */
     public Modal(String message, JFrame parent, String title)
     {
         super(parent, title, true);
@@ -62,11 +81,25 @@ public class Modal extends JDialog
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Метод за инстанция на прозореца "Modal".
+     *
+     * @param parent    родителят, който JFrame ще го използва
+     * @param title     заглавие на прозореца
+     * @param message   съобщение в прозореца
+     */
     public static void renderMessage(JFrame parent, String title, String message)
     {
         new Modal(parent, title, message);
     }
 
+    /**
+     * Метод за инстанция на прозореца "Modal" с бутон.
+     *
+     * @param parent    родителят, който JFrame ще го използва
+     * @param title     заглавие на прозореца
+     * @param message   съобщение в прозореца
+     */
     public static void renderMessageWithButton(JFrame parent, String title, String message)
     {
         new Modal(message, parent, title);

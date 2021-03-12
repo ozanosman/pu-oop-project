@@ -4,13 +4,32 @@ import game.GameBoard;
 
 import java.awt.*;
 
+/**
+ * Клас наследяващ Piece, съдържащ конструктор и метод за елементи "Knight".
+ *
+ * @author Озан Осман
+ */
 public class Knight extends Piece
 {
+    /**
+     * Конструктор на супер класа за елемента "Knight".
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     * @param color     цвят на елемента
+     * @param outlineColor      контур на елемента
+     */
     public Knight(int row, int col, Color color, Color outlineColor)
     {
         super(row, col, color, outlineColor, "K", 8, 3, 15, 1, 1);
     }
 
+    /**
+     * Метод, който проверява и връща дали елемента "Knight" може да се постави.
+     *
+     * @param placementRow   ред на елемента, който може да се постави
+     * @param placementCol   колона на елемента, който може да се постави
+     */
     @Override
     public boolean isPlacementValid(int placementRow, int placementCol)
     {
@@ -21,6 +40,12 @@ public class Knight extends Piece
         return GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER2 && placementRow > 4 && placementCol < 9;
     }
 
+    /**
+     * Метод, който проверява и връща дали елемента "Knight" може да се движи.
+     *
+     * @param moveRow   ред на елемента, който може да се движи
+     * @param moveCol   колона на елемента, който може да се движи
+     */
     @Override
     public boolean isMoveValid(int moveRow, int moveCol)
     {
@@ -43,6 +68,12 @@ public class Knight extends Piece
         return false;
     }
 
+    /**
+     * Метод, който проверява и връща дали елемента "Knight" може да атакува.
+     *
+     * @param attackRow   ред на елемента, който може да атакува
+     * @param attackCol   колона на елемента, който може да атакува
+     */
     @Override
     public boolean isAttackValid(int attackRow, int attackCol)
     {

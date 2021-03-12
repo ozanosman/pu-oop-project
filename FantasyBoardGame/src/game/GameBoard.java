@@ -7,6 +7,11 @@ import tile.Tile;
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Клас съдържащ методи за изпълнението на логиката в приложението.
+ *
+ * @author Озан Осман
+ */
 public class GameBoard
 {
     private final int TILE_SIDE_HEIGHT = 7;
@@ -28,6 +33,11 @@ public class GameBoard
 
     public int ROUND = 0;
 
+    /**
+     * Метод, който визуализира полето на Player A.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderPlayerAField(Graphics g)
     {
         for (int row = 0; row < 2; row++)
@@ -42,6 +52,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира полето на Player B.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderPlayerBField(Graphics g)
     {
         for (int row = 5; row < 7; row++)
@@ -56,6 +71,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира бойното поле.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderBattleField(Graphics g)
     {
         for (int row = 2; row < 5; row++)
@@ -70,6 +90,9 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод задаващ координати за визуализиране на елементи "Obstacle Tile".
+     */
     public void obstacleCoordinates()
     {
         int OBSTACLE_COUNT = ThreadLocalRandom.current().nextInt(1, 6);
@@ -91,6 +114,13 @@ public class GameBoard
         while(OBSTACLE_COUNT != 0);
     }
 
+    /**
+     * Метод съдържащ инстанция на клас за визуализиране на елементи "Obstacle Tile".
+     *
+     * @param g     обект на супер класа
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     private void renderObstacle(Graphics g, int row, int col)
     {
         if (this.hasBoardTile(row, col))
@@ -100,6 +130,12 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който проверява и връща елемент от обекта за елементи "Obstacle Tile", ако то е от определения цвят.
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     public boolean isObstacleBlocking(int row,int col)
     {
         Tile tile = getBoardTile(row,col);
@@ -112,6 +148,11 @@ public class GameBoard
         return false;
     }
 
+    /**
+     * Метод, който визуализира низ базиран на стойност на избрания играч.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderPlayerTurn(Graphics g)
     {
         g.setFont(Font.decode("Courier, Font.BOLD, 25"));
@@ -129,6 +170,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира низове и полета за избиране на игрални фигури.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderPlayerPiecePickerFields(Graphics g)
     {
         g.setFont(Font.decode("Courier, Font.BOLD, 25"));
@@ -143,6 +189,11 @@ public class GameBoard
         renderPlayerBPlacementBlocker(g);
     }
 
+    /**
+     * Метод, който визуализира рунда.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderRound(Graphics g)
     {
         g.setFont(Font.decode("Courier, Font.BOLD, 25"));
@@ -151,6 +202,11 @@ public class GameBoard
         g.drawString("Рунд: " + ++ROUND, 1000, 650);
     }
 
+    /**
+     * Метод, който убитите фигури на Player A и Player B.
+     *
+     * @param g     обект на супер класа
+     */
     public void renderPlayersKillCount(Graphics g)
     {
         g.setFont(Font.decode("Courier, Font.BOLD, 15"));
@@ -162,6 +218,11 @@ public class GameBoard
         g.drawString("Убити фигури: " + PLAYER2_KILLED_PIECES, 1250, 395);
     }
 
+    /**
+     * Метод съдържащ цикъл и инстанция на клас за визуализиране на елементи "Knight", "Elf" и "Dwarf".
+     *
+     * @param g     обект на супер класа за всички графични контексти
+     */
     public void renderPiece(Graphics g)
     {
         for (int row = 0; row < 7; row++)
@@ -177,6 +238,13 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който контролира елемента "Piece" въз основа на това кой го контролира.
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     * @param piece     инстанция на клас
+     */
     public void movePiece(int row, int col, Piece piece)
     {
         if (CHOSEN_PLAYER % 2 == PLAYER1 && piece.getColor().equals(Color.RED))
@@ -210,31 +278,66 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който връща елемент от обекта за елементи "Tile".
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     public Tile getBoardTile(int row, int col)
     {
         return this.tileCollection[row][col];
     }
 
+    /**
+     * Метод, който проверява и връща елемент от обекта за елементи "Tile", ако те съществуват.
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     public boolean hasBoardTile(int row, int col)
     {
         return this.getBoardTile(row, col) != null;
     }
 
+    /**
+     * Метод, който връща елемент от обекта за елементи "Piece".
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     public Piece getBoardPiece(int row, int col)
     {
         return this.pieceCollection[row][col];
     }
 
+    /**
+     * Метод, който проверява и връща елемент от обекта за елементи "Piece", ако те съществуват.
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     public boolean hasBoardPiece(int row, int col)
     {
         return this.getBoardPiece(row, col) != null;
     }
 
+    /**
+     * Метод, който връща координати на игралната дъска в единични числа.
+     *
+     * @param coordinates   координати
+     */
     public int getBoardCoordinates(int coordinates)
     {
         return coordinates / Tile.TILE_SIZE;
     }
 
+    /**
+     * Метод, който задава цвят на елемент според неговия ред и колона.
+     *
+     * @param row   ред на елемента
+     * @param col   колона на елемента
+     */
     private Color getFieldColor(int row, int col)
     {
         boolean isRowEven = (row % 2 == 0);
@@ -261,6 +364,11 @@ public class GameBoard
         return new Color(170, 170 ,170);
     }
 
+    /**
+     * Метод, който визуализира полето за избиране на игрални фигури за Player A.
+     *
+     * @param g     обект на супер класа
+     */
     private void renderPlayerAPiecePickerField(Graphics g)
     {
         for (int row = 1; row < 3; row++)
@@ -273,6 +381,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира полето за избиране на игрални фигури за Player B.
+     *
+     * @param g     обект на супер класа
+     */
     private void renderPlayerBPiecePickerField(Graphics g)
     {
         for (int row = 4; row < 6; row++)
@@ -285,6 +398,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира блокиращи полето против слагане на фигури за Player A.
+     *
+     * @param g     обект на супер класа
+     */
     private void renderPlayerAPlacementBlocker(Graphics g)
     {
         if (CHOSEN_PLAYER % 2 == PLAYER1 && CHOSEN_PLAYER < 12)
@@ -300,6 +418,11 @@ public class GameBoard
         }
     }
 
+    /**
+     * Метод, който визуализира блокиращи полето против слагане на фигури за Player B.
+     *
+     * @param g     обект на супер класа
+     */
     private void renderPlayerBPlacementBlocker(Graphics g)
     {
         if (CHOSEN_PLAYER % 2 == PLAYER2 && CHOSEN_PLAYER < 12)
