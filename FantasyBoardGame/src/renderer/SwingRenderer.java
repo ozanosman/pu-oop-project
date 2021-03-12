@@ -5,6 +5,7 @@ import piece.Dwarf;
 import piece.Elf;
 import piece.Knight;
 import piece.Piece;
+import tile.ObstacleTile;
 import ui.Modal;
 
 import javax.swing.*;
@@ -59,6 +60,11 @@ public class SwingRenderer extends JFrame implements MouseListener
         int row = this.gameBoard.getBoardCoordinates(e.getY());
         int col = this.gameBoard.getBoardCoordinates(e.getX());
 
+        if (this.gameBoard.ROUND >= 20 && this.gameBoard.isGameOn)
+        {
+            Modal.renderMessageWithButton(this,"Внимание!","Играта завършва без победители!");
+        }
+
         Piece piece = this.gameBoard.selectedPiece;
 
         if (this.gameBoard.selectedPiece != null && !this.gameBoard.allPiecesPlaced)
@@ -84,17 +90,24 @@ public class SwingRenderer extends JFrame implements MouseListener
 
         if (this.gameBoard.selectedPiece != null && this.gameBoard.allPiecesPlaced)
         {
-            if (piece.isMoveValid(row, col))
+            if (this.gameBoard.isObstacleBlocking(row, col))
             {
-                this.gameBoard.movePiece(row, col, piece);
-
-                this.repaint();
-
-                return;
+                Modal.renderMessage(this, "Внимание!", "Тука има препятствие!");
             }
             else
             {
-                Modal.renderMessage(this, "Внимание!", "Тука не можете да подвижите фигурата си!");
+                if (piece.isMoveValid(row, col))
+                {
+                    this.gameBoard.movePiece(row, col, piece);
+
+                    this.repaint();
+
+                    return;
+                }
+                else
+                {
+                    Modal.renderMessage(this, "Внимание!", "Тука не можете да подвижите фигурата си!");
+                }
             }
         }
 
@@ -141,5 +154,10 @@ public class SwingRenderer extends JFrame implements MouseListener
         this.gameBoard.renderPlayerTurn(g);
         this.gameBoard.renderPlayerPiecePickerFields(g);
         this.gameBoard.renderPiece(g);
+
+        if (this.gameBoard.CHOSEN_PLAYER >= 12)
+        {
+            this.gameBoard.renderRound(g);
+        }
     }
 }

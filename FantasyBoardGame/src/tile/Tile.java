@@ -19,6 +19,11 @@ public class Tile
         this.outlineColor = outlineColor;
     }
 
+    public Color getColor()
+    {
+        return color;
+    }
+
     public void renderTile(Graphics g)
     {
         int tileX = this.col * TILE_SIZE;

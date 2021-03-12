@@ -23,6 +23,8 @@ public class GameBoard
     public boolean isGameOn = false;
     public boolean allPiecesPlaced = false;
 
+    public int ROUND = 0;
+
     public void renderPlayerAField(Graphics g)
     {
         for (int row = 0; row < 2; row++)
@@ -74,7 +76,7 @@ public class GameBoard
             int row = ThreadLocalRandom.current().nextInt(2, 5);
             int col = ThreadLocalRandom.current().nextInt(0, 9);
 
-            if (this.tileCollection[row][col] != null)
+            if (this.hasBoardTile(row, col))
             {
                 continue;
             }
@@ -88,11 +90,23 @@ public class GameBoard
 
     private void renderObstacle(Graphics g, int row, int col)
     {
-        if (this.tileCollection[row][col] != null)
+        if (this.hasBoardTile(row, col))
         {
             Tile tile = this.tileCollection[row][col];
             tile.renderTile(g);
         }
+    }
+
+    public boolean isObstacleBlocking(int row,int col)
+    {
+        Tile tile = getBoardTile(row,col);
+
+        if (this.hasBoardTile(row, col))
+        {
+            return tile.getColor().equals(Color.BLACK);
+        }
+
+        return false;
     }
 
     public void renderPlayerTurn(Graphics g)
@@ -126,6 +140,13 @@ public class GameBoard
         renderPlayerBPlacementBlocker(g);
     }
 
+    public void renderRound(Graphics g)
+    {
+        g.setFont(Font.decode("Courier, Font.BOLD, 25"));
+        g.setColor(Color.GRAY);
+        g.drawString("Рунд: " + ++ROUND, 1000, 650);
+    }
+
     public void renderPiece(Graphics g)
     {
         for (int row = 0; row < 7; row++)
@@ -154,6 +175,16 @@ public class GameBoard
         this.selectedPiece = null;
 
         CHOSEN_PLAYER++;
+    }
+
+    public Tile getBoardTile(int row, int col)
+    {
+        return this.tileCollection[row][col];
+    }
+
+    public boolean hasBoardTile(int row, int col)
+    {
+        return this.getBoardTile(row, col) != null;
     }
 
     public Piece getBoardPiece(int row, int col)

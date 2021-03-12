@@ -29,7 +29,7 @@ public class Dwarf extends Piece
             int rowCoefficient = Math.abs(moveRow - this.row);
             int colCoefficient = Math.abs(moveCol - this.col);
 
-            return rowCoefficient == 0 && colCoefficient == 2 || rowCoefficient == 2 && colCoefficient == 0;
+            return rowCoefficient == 0 && colCoefficient <= 2 || rowCoefficient <= 2 && colCoefficient == 0;
         }
 
         if (GameBoard.CHOSEN_PLAYER % 2 == GameBoard.PLAYER2 && moveRow > 1 && moveCol < 9)
@@ -37,7 +37,7 @@ public class Dwarf extends Piece
             int rowCoefficient = Math.abs(moveRow - this.row);
             int colCoefficient = Math.abs(moveCol - this.col);
 
-            return rowCoefficient == 0 && colCoefficient == 2 || rowCoefficient == 2 && colCoefficient == 0;
+            return rowCoefficient == 0 && colCoefficient <= 2 || rowCoefficient <= 2 && colCoefficient == 0;
         }
 
         return false;
