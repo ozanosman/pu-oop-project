@@ -4,6 +4,7 @@ import game.GameBoard;
 import piece.Dwarf;
 import piece.Elf;
 import piece.Knight;
+import piece.Piece;
 import ui.Modal;
 
 import javax.swing.*;
@@ -39,6 +40,7 @@ public class SwingRenderer extends JFrame implements MouseListener
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.addMouseListener(this);
 
         this.gameBoard.obstacleCoordinates();
 
@@ -54,7 +56,31 @@ public class SwingRenderer extends JFrame implements MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        int row = this.gameBoard.getBoardCoordinates(e.getY());
+        int col = this.gameBoard.getBoardCoordinates(e.getX());
 
+        if (this.gameBoard.selectedPiece != null)
+        {
+            Piece piece = this.gameBoard.selectedPiece;
+
+            if (piece.isPlacementValid(row, col))
+            {
+                this.gameBoard.movePieceFromPickerField(row, col, piece);
+
+                this.repaint();
+
+                return;
+            }
+            else
+            {
+                Modal.renderMessage(this, "Внимание!", "Тука не можете да поставите фигурата си!");
+            }
+        }
+
+        if (this.gameBoard.hasBoardPiece(row, col))
+        {
+            this.gameBoard.selectedPiece = this.gameBoard.getBoardPiece(row, col);
+        }
     }
 
     @Override

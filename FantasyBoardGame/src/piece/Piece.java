@@ -33,6 +33,22 @@ public abstract class Piece
         this.speed = speed;
     }
 
+    public int getRow()
+    {
+        return row;
+    }
+
+    public int getCol()
+    {
+        return col;
+    }
+
+    public void movePiece(int newRow, int newCol)
+    {
+        this.row = newRow;
+        this.col = newCol;
+    }
+
     public void renderPiece(Graphics g)
     {
         int pieceX = this.col * Tile.TILE_SIZE;
@@ -48,6 +64,8 @@ public abstract class Piece
         g.setFont(Font.decode("Courier, Font.BOLD, 50"));
         g.drawString(this.id, pieceX + 35, pieceY + 65);
     }
+
+    public abstract boolean isPlacementValid(int placementRow, int placementCol);
 
     public abstract boolean isMoveValid(int moveRow, int moveCol);
 

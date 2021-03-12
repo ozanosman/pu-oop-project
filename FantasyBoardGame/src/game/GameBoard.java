@@ -14,6 +14,11 @@ public class GameBoard
 
     private Tile[][] tileCollection = new Tile[TILE_SIDE_HEIGHT][TILE_SIDE_WIDTH];
     public Piece[][] pieceCollection = new Piece[7][14];
+    public Piece selectedPiece;
+
+    public static int CHOSEN_PLAYER = 0;
+    public static int PLAYER1 = 0;
+    public static int PLAYER2 = 1;
 
     public boolean isGameOn = false;
 
@@ -116,6 +121,20 @@ public class GameBoard
         }
     }
 
+    public void movePieceFromPickerField(int row, int col, Piece piece)
+    {
+        int initialRow = piece.getRow();
+        int initialCol = piece.getCol();
+
+        piece.movePiece(row, col);
+
+        this.pieceCollection[piece.getRow()][piece.getCol()] = this.selectedPiece;
+        this.pieceCollection[initialRow][initialCol] = null;
+
+        this.selectedPiece = null;
+        CHOSEN_PLAYER++;
+    }
+
     public Piece getBoardPiece(int row, int col)
     {
         return this.pieceCollection[row][col];
@@ -124,6 +143,11 @@ public class GameBoard
     public boolean hasBoardPiece(int row, int col)
     {
         return this.getBoardPiece(row, col) != null;
+    }
+
+    public int getBoardCoordinates(int coordinates)
+    {
+        return coordinates / Tile.TILE_SIZE;
     }
 
     private Color getFieldColor(int row, int col)
